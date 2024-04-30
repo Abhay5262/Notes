@@ -1,0 +1,552 @@
+*--------Angular Introduction------------*
+
+
+1. Angular is an Open Source JavaScript MVC framework for the web application. Angular is used to create Single Page Application (SPA)
+ 
+2. It Uses Typescript and HTML to build Apps. The Angular itself is written using the Typescript.
+ 
+3. It Comes with features like- Component, Directives, Forms, Pipes, HTTP Services etc.
+ 
+4. Angular is a JavaScript Framework written in Typescript and maintained by GOOGLE
+ 
+5. Typescript maintained by Microsoft
+ 
+6. First Version of Angular called AngularJS was initially released in OCT 2010
+ 
+ 
+ 
+# Typescript:
+ 
+1. Typescript is a superset of JavaScript that compiles to plain JavaScript.
+2. Typescript is a strongly types, object oriented , compiled language.
+ 
+ 
+# Examples with Angular Technology
+ 
+1. Gmail App, Netflix, UpWork, Paypal, Weather.com etc.
+ 
+ 
+ 
+#Getting started with Angular:
+ 
+ 
+	//ng new name_of_project
+1. The first file to render on running application will be index.html which present in src folder.
+ 
+ 
+-> src folder-> Contains source files for the root level application project.
+ 
+-> assets folder- Contains all the static assets like images, fonts etc.
+ 
+-> node_modules- This folder is created while we run npm install and it contains all the project dependencies or any
+third party modules required for the project
+ 
+-> package.json- configures 'npm dependencies' which are available for the project in the workspace along with their
+versions specified.
+ 
+-> environments- Deployment related environments
+ 
+-> package-lock.json- Include all detailed root packages and internal packages
+ 
+-> angular.json- Application configuration file. // Bootstrap path  will be added here
+ 
+-> tsconfiguration.json- typescript related configuration.
+ 
+-> karma.conf.js- Test cases related configuration.
+ 
+-> polyfills.ts - This file included polyfills needed by angular and is loaded before the app.
+ 
+-> readme.md- file is being used as documentation for the app.
+ 
+ 
+# Run the Angular App-> ng serve / ng serve --open / ng serve -o
+ 
+ 
+# Work flow of Angular:
+ 
+ 
+1. main.ts (Entry Point of Angular->inside src)-> 2. app.module.ts(AppModule) (inside src/app) -> 3. app.component.ts(inside src/app)
+ 
+4. [app.component.html(inside src/app) <- 5. app.component.css (inside src/app)] -> 6. index.html (inside src)
+ 
+7. Display to User
+ 
+ 
+ 
+-> Every angular app has 1 module file called AppModule/root module 
+-> Every angular app has 1 pre defined component called app/root component
+-> Angular app can have one or more modules
+-> Modules can have one or more components and services
+-> Component-> html, css, typescript
+
+*---------Data Binding ---------------------*
+
+
+
+
+->>Data Binding
+ 
+1. One Way Binding
+	-> Component to HTML Template (Interpolation, property binding, class binding etc)
+	-> HTML Template to Component (Event Binding)
+ 
+2. Two Way Binding
+	-> Forms
+
+
+=> One Way Binding: Component to Template
+ 
+1. Property Binding
+ 
+[nameOfPropertyDOM]="value"
+ 
+ 
+2. Attribute Binding
+ 
+[attr.collspan]="var"
+ 
+3. Class Binding
+ 
+4. Syle Binding
+ 
+ 
+=> One Way Binding- Template to Component
+ 
+mouseup|mousedown|mouse
+ 
+---> Event Object $event
+ 
+---> Template Reference Variable #name
+
+
+*-----------------Directives---------------------*
+
+
+Structural Directives in Angular
+ 
+-> Structural directives are responsible for the structure and layout of the DOM element. It is used to hide or display the
+elements in the DOM
+ 
+a. ngIf
+b. ngIf --else
+c. ngSwitch
+d. ngFor
+ 
+ 
+ 
+-> ngIf structural Directive(*ngIf)
+ 
+a. ngIf directive is used to display or hide the DOM element based on the expression value assigned to it. 
+	The expression must return a Boolean Value.
+ 
+b. ngIf directive doesnot hide the DOM element. It removes the entire element along with its subtree from the DOM
+ 
+->ngIf --else Structural Directive
+ 
+a. ngIf--else works like a simple if else statement wherein if the condition is true then if DOM element is rendered, else
+	the other DOM element is rendered.
+ 
+b. Angular uses ng-template with element selector (Template reference variable) in order to display the else section in DOM.
+ 
+-> ngSwitch Structural Directive
+ 
+a. The ngSwitch directive is applied to the container element with a switch expression. Container elements are div, header, footer etc.
+ 
+b.In angular ngSwitchCase directive , the inner elements are placed inside the container element.
+ 
+c. ngSwitchDefault
+
+*-------------Pipes--------------------------*
+
+
+
+[3/20 4:06 PM] Deepak Vishwakarma (External)
+#Pipes:
+
+	- In Angular 1, filters are used which are later called pipes onwards Angular2.
+
+	1. Pipes are simple functions to use in template expression to accept an input value and return a transformed value.
+
+	2. Pipes are useful because we can use them throughout our application, while only declaring each pipe once.
+
+	- Syntax: {{ data | name_of_pipe }}  example- {{ title | uppercase }}
+ 
+#Built in Pipes:
+ 
+	1. Lowercase, Uppercase, Titlecase Pipes
+
+	2. json Pipe
+
+	3. Slice Pipe
+
+	4. date Pipe
+
+	5. currency pipe
+
+	6. percent pipe
+
+	7. decimal pipe (number)
+ 
+ 
+#Custome Pipe
+ 
+	- Angular makes provision to create custome pipes that convert the data in the format that we need.
+
+	- Angular Pipes are typeScript classes with the @pipe decorator.
+
+	- CLI Command: ng g p name_of_pipe
+
+	- Parameter | Multiparameters
+
+
+*-----------------Template Driven Form Validation ------------------*
+
+#Template Driven Form Validations:
+ 
+	1. Validations in Template driven forms are provided by the validation directives.
+	2. The Angular Form Module comes with several built-in validators.
+ 
+=> Disable Browser Validations-> We need to add novalidate attribute in <form> element.
+ 
+	3. The built-in validators use the HTML 5 validation attributes like - required, minlength,maxlength & pattern
+ 
+=> Properties (form implementation of angular validation): 
+	a. touched  	- clicking on input element after on clicking on some other part of form -> True
+	b. untouched	- clicking on input element after on clicking on some other part of form -> false
+	c. valid		- data should be inside input element- True
+	d. invalid		- opposite of valid
+	e. pristine		- No changes in form after form load - True 
+	f. dirty		- Opposite of pristine
+-> class.is-invalid='name.touched && name.invalid'
+<div class="alert alert-danger" *ngIf="brnch.touched && brnch.invalid">
+<div *ngIf="brnch.errors && brnch.errors['required']">
+            select branch
+</div>
+</div>
+-> [disabled]='FormData.invalid'
+ 
+# Working with drop down (Select and Option Tag)
+ 
+# Working with Radio Button and Checkbox
+	checkboxData: string[] = [];
+	onChang(e: any) {
+			if (e.target.checked) {
+			  this.checkboxData.push(e.target.value)
+			} else {
+			  let index = this.checkboxData.indexOf(e.target.value)
+			  this.checkboxData.splice(index, 1)
+			}
+		console.log("Checkbox Data->>>",this.checkboxData);
+	  }
+ 
+# Reset Form:
+ 
+  import { NgForm } from '@angular/forms';
+ 
+  resetForm(formData:NgForm)
+  {
+    formData.resetForm();
+  }
+
+
+*------------------------Service In Angular ------------------------*
+
+
+#Service in Angular:
+ 
+	=> Without using Service: Duplication of Data
+ 
+	1. What is an Angular Service? : 
+		Service is a piece of reusable code with a focused purpose. A code that we will use across multiple components in our application.
+ 
+		Our components need to access the data. we can write data access code in each Component, but this is very inefficient and breaks the rule of single responsibility (DRY). The Component should focus on presenting the data to the user.
+ 
+		The task of receiving data from the back-end server should be delegated to another class. We call a class - a service class because it provides each Component with the data it needs.
+		"Angular services provide a way for us to separate Angular app data and functions that can be used by multiple components in our app. To be used by multiple components, a service must be made injectable. Services that are injectable and used by a component become dependencies of that component. The component depends on those services and can't function without them."
+	=> Service is just a class with specific purpose:
+		a. Data sharing across multiple components
+		b. It is used to apply application logic
+		c. We can use Services for external interactions such as connecting to a APIs,database.
+	2. Dependency injection? :
+		Dependency injection is the mechanism that manages the dependencies of an app's components and the services that other components can use.
+	3. Create a new service :
+		ng generate service api-access --skip-tests
+	4. Registration of Angular Service
+		import { DataService } from './data.service'
+		Navigate to our app module file -> register the service under providers: [DataService],
+	4.  Inject the new service into Component
+
+*------------------For CorsOrigin blocked by browser--------------------*
+
+
+origin 'http://localhost:4200' has been blocked by CORS
+ 
+ 
+For temporary testing during development we can disable it by opening chrome with disabled web security like this.
+ 
+Open command line terminal and go to folder where chrome is installed i.e. C:\Program Files (x86)\Google\Chrome\Application
+ 
+Enter this command:
+ 
+chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security 
+
+A new browser window will open with disabled web security. Use it only for testing your app.
+
+*-----------------------Reactive Form --------------------------------*
+
+# Reactive Forms in Angular:
+ 
+-> Configure Reactive Forms: To enable reactive forms, first we need to import 'ReactiveFormsModule' in app.module.ts file and register it inside imports[].
+ 
+-> Creating Reactive Form:  Create FormModel in Component class using FormGroup, FormControl and FormArrays
+ 
+	a. FormGroup  - Used to aggregate the values of collection form control
+	b. FormControl- Define basic functionality in individual form control
+	c. FormArray  - Used to aggregate the values of Form control into an Array
+-> FormsControls keep track of the value, validation and events in a control and FormGroup contains a group of formControls.
+
+*--------------------------Handle Resource type Response From Spring Boot o Angular Side-------------------------------*
+
+
+ downloadFormat() {
+    this.apicall.downloadFormatFile().subscribe({
+      next: (resp) => {
+        const downloadUrl=window.URL.createObjectURL(resp);
+        const link=document.createElement('a')
+        link.href=downloadUrl;
+        link.download="Dummy.xlsx";
+        link.click();
+      },
+      error: (err) => {
+        console.log(err)
+      },
+      complete: () => { }
+    })
+  }
+
+  downloadFormatFile(): Observable<Blob> {
+    return this.http.get(this.baseUrl + "document/download-format", { responseType: 'blob' });
+  }
+
+To handle resource type response in angular side
+
+*-----------------------------Store Procedure ---------------------------*
+
+[4/8 5:30 PM] Deepak Vishwakarma (External)
+# Stored Procedure :
+ 
+	1. Introduction: A procedure (often called a stored procedure) is a collection of pre-compiled SQL statements stored inside the database.
+
+		-> A procedure always contains a name, parameter lists, and SQL statements
+
+	2. Stored Procedure Features:
+
+		-> Stored Procedure increases the performance of the applications. Once stored procedures are created, they are compiled and 	stored in the database.
+
+		-> Stored procedure reduces the traffic between application and database server. Because the application has to send only the stored procedure's name and parameters instead of sending multiple SQL statements.
+
+		-> Stored procedures are reusable and transparent to any applications.
+
+		-> A procedure is always secure. The database administrator can grant permissions to applications that access stored procedures in the database without giving any permissions on the database tables.
+ 2. Creation of SP
+
+		Syntax:
+
+		DELIMITER &&  
+
+		CREATE PROCEDURE procedure_name [[IN | OUT | INOUT] parameter_name datatype [, parameter datatype]) ]    
+
+		BEGIN    
+
+			Declaration_section    
+
+			Executable_section    
+
+		END && 
+
+		DELIMITER ;   
+ 
+		#procedure_name - It represents the name of the stored procedure.
+
+		#parameter      - It represents the number of parameters. It can be one or more than one.
+
+		#Declaration_section - 	It represents the declarations of all variables.
+
+		#Executable_section  -  It represents the code for the function execution.
+ 3. Modes in Stored Procedure in MySQL
+
+		1. IN (Default Mode) - It takes a parameter as input, such as an attribute. When we define it, the calling program has to pass an argument to the stored procedure
+
+		2. OUT - It is used to pass a parameter as output. Its value can be changed inside the stored procedure, and the changed (new) value is passed back to the calling program
+
+		3. INOUT- It is a combination of IN and OUT parameters. It means the calling program can pass the argument, and the procedure can modify the INOUT parameter, and then passes the new value back to the calling program.
+ 4. How to call a stored procedure?
+
+		Syntax: CALL procedure_name ( parameter(s))  
+5. Call Stored Procedure from Springboot JPA:
+
+		1. Using @Procedure in Repository
+
+		2. Using @NamedStoredProcedureQuery or @NamedStoredProcedureQueries in Entity
+
+		3. Using native Query (@query) in Repository
+
+
+
+# Stored Procedure :
+ 
+	1. Introduction: A procedure (often called a stored procedure) is a collection of pre-compiled SQL statements stored inside the database.
+		-> A procedure always contains a name, parameter lists, and SQL statements
+	2. Stored Procedure Features:
+		-> Stored Procedure increases the performance of the applications. Once stored procedures are created, they are compiled and 	stored in the database.
+		-> Stored procedure reduces the traffic between application and database server. Because the application has to send only the stored procedure's name and parameters instead of sending multiple SQL statements.
+		-> Stored procedures are reusable and transparent to any applications.
+		-> A procedure is always secure. The database administrator can grant permissions to applications that access stored procedures in the database without giving any permissions on the database tables.
+	2. Creation of SP
+		Syntax:
+		DELIMITER &&  
+		CREATE PROCEDURE procedure_name [[IN | OUT | INOUT] parameter_name datatype [, parameter datatype]) ]    
+		BEGIN    
+			Declaration_section    
+			Executable_section    
+		END && 
+		DELIMITER ;   
+ 
+		#procedure_name - It represents the name of the stored procedure.
+		#parameter      - It represents the number of parameters. It can be one or more than one.
+		#Declaration_section - 	It represents the declarations of all variables.
+		#Executable_section  -  It represents the code for the function execution.
+ 3. Modes in Stored Procedure in MySQL
+		1. IN (Default Mode) - It takes a parameter as input, such as an attribute. When we define it, the calling program has to pass an argument to the stored procedure
+		2. OUT - It is used to pass a parameter as output. Its value can be changed inside the stored procedure, and the changed (new) value is passed back to the calling program
+		3. INOUT- It is a combination of IN and OUT parameters. It means the calling program can pass the argument, and the procedure can modify the INOUT parameter, and then passes the new value back to the calling program.
+4. How to call a stored procedure?
+		Syntax: CALL procedure_name ( parameter(s))  
+	5. Call Stored Procedure from Springboot JPA:
+		1. Using @Procedure in Repository
+		2. Using @NamedStoredProcedureQuery or @NamedStoredProcedureQueries in Entity
+		3. Using native Query (@query) in Repository
+ 
+ 
+ 
+Examples:
+ 
+ 
+	1. Procedure without Parameter
+	CREATE PROCEDURE get_merit_student ()  
+	BEGIN  
+		SELECT * FROM student_info WHERE marks > 70;  
+		SELECT COUNT(stud_code) AS Total_Student FROM student_info;    
+	END
+	: mysql> CALL get_merit_student();  
+
+	2. Procedures with IN Parameter
+	CREATE PROCEDURE get_student (IN var1 INT)  
+	BEGIN  
+		SELECT * FROM student_info LIMIT var1;  
+		SELECT COUNT(stud_code) AS Total_Student FROM student_info;    
+	END
+	: mysql> CALL get_student(4);  
+
+ 3. Procedures with OUT Parameter
+	CREATE PROCEDURE display_max_mark (OUT highestmark INT)  
+	BEGIN  
+		SELECT MAX(marks) INTO highestmark FROM student_info;   
+	END
+	: mysql> CALL display_max_mark(@M);  
+	: mysql> SELECT @M;  
+
+	4. Procedures with INOUT Parameter
+	CREATE PROCEDURE display_marks (INOUT var1 INT)  
+	BEGIN  
+    SELECT marks INTO var1 FROM student_info WHERE stud_id = var1;   
+	END 
+	: mysql> SET @M = '3';  
+	: mysql> CALL display_marks(@M);  
+	: mysql> SELECT @M;  
+
+ 
+How to show or list stored procedures in MySQL?
+ 
+	: mysql> SHOW PROCEDURE STATUS WHERE db = 'customer';
+ 
+DROP PROCEDURE [ IF EXISTS ] procedure_name;
+ 
+	: DROP PROCEDURE display_marks; 
+
+
+ *---------------------------Git --------------------------------------*
+
+#GIT
+ 
+ 
+-> What is Git? 
+		- Git is a popular version control system. It was created by Linus Torvalds in 2005, and has been maintained by Junio Hamano since then.
+-> 	It is used: 
+		Tracking code changes
+		Tracking who made changes
+		Coding collaboration
+ 
+->	Git is a version control system.
+	Git helps us keep track of code changes.
+	Git is used to collaborate on code.
+ 
+ 
+-> What does Git do?
+		Manage projects with Repositories
+		Clone a project to work on a local copy
+		Control and track changes with Staging and Committing
+
+		[init]->[stage]->[commit]->[push]
+		Branch and Merge to allow for work on different parts and versions of a project
+		Pull the latest version of the project to a local copy
+		Push local updates to the main project
+ 
+->Working with Git
+		Initialize Git on a folder, making it a Repository
+		Git now creates a hidden folder to keep track of changes in that folder
+		When a file is changed, added or deleted, it is considered modified
+		You select the modified files you want to Stage
+		The Staged files are Committed, which prompts Git to store a permanent snapshot of the files
+		Git allows you to see the full history of every commit.
+		we can revert back to any previous commit.
+		Git does not store a separate copy of every file in every commit, but keeps track of changes made in each commit!
+
+ 
+-> Why Git?
+		Over 70% of developers use Git!
+		Developers can work together from anywhere in the world.
+		Developers can see the full history of the project.
+		Developers can revert to earlier versions of a project.
+-> What is GitHub?
+		Git is not the same as GitHub.
+		GitHub makes tools that use Git.
+		GitHub is the largest host of source code in the world, and has been owned by Microsoft since 2018.
+
+ 
+ 
+-> GIT Version-  git --version
+ 
+-> GIT Configuration -
+ 
+	SET UserName- git config --global user.name "Deepak"
+	SET Email- git config --global user.email "xyz@gmail.com"
+	SET PASSWORD- git config --global user.password "1234321"
+	-> git config --list
+
+-> Keyword used
+ 
+	1. Branch 
+	2. Checkout- switching between branches
+	3. Clone- Making copy of repository
+	3. Merge - Combining branches
+	4. Origin- remote repository from a project was initally cloned
+	5. Pull- receive the data from GITHUB
+	6. Push - Upload local repository to GitHub
+	7. Git Ignore
+	8. Git Diff- shows changes between commit, working directory
+	9. Git rm - remove file
+
+*------------------------------ End ---------------------------------------*
+
+
