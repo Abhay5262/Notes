@@ -1,0 +1,213 @@
+*------------------------ Generate Jwt Token (In Old Version)---------------------*
+Part-1 : Generate JWT Token
+ 
+##Add Following Dependencies in POM.XML
+a. Spring Security
+b. JJWT
+c. javax.xml.bind
+ 
+## Make Configuration class and annotate with following dependencies
+a. @Configuration
+b. @EnableWebSecurity
+ 
+## Extends class with WebSecurityConfigurerAdapter & Override the following methods:
+a. configure(AuthenticationManagerBuilder auth) -> Set the userDetails
+b. configure(HttpSecurity http)-> Configure the url authorization
+ex- http.csrf().disable().cors().disable().authorizeRequests().antMatchers("/get-token").permitAll().anyRequest()
+				.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+ 
+## Create a class projectUserDetails and implements UserDetailsService -> Override loadUserByUsername
+ 
+## Create Bean of PasswordEncoder
+ 
+## Create Bean of AuthenticationManager
+ 
+## Create JWT Util class
+ 
+## In Controller API->
+-> Authenticate using authentication:
+this.authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(), jwtRequest.getPassWord()))
+## Get the UserDetails by UserName
+ 
+## Generate the token using JWT Utils and UserDetails
+
+
+*------------------- Authenticate Token -----------------*
+
+
+Part-2 : Authenticate JWT Token
+ 
+## Create Filter Class -> Extends with OncePerRequestFilter and Override doFilterInternal method
+ 
+a. Get the header jwt data using HttpServletRequest -> request.getHeader("Authorization");
+b. Validate the header -> isNull and Start with Bearer 
+c. Extract the JWT token-> reqTokenHeader.substring(7); //split Bearer and Token
+d. Get The UserName-> jwtUtil.extractUsername(jwtToken);
+e. Validate the username-> isNull? and SecurityContextHolder.getContext().getAuthentication()!=null
+f. Get UserDetails-> loadUserByUsername()
+g. Validate the Token-> jwtUtil.validateToken(token, userDetails)
+h. UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
+						null, userDetails.getAuthorities());
+->authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+->SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+ 
+i. Add http.addFilterBefore(myFilter, UsernamePasswordAuthenticationFilter.class); in HttpSecurity object
+
+*---------------------------------Jwt Token (gboot 3.x)--------------------------------------------------------*
+
+JWT Implementation in Springboot 3.x
+ 
+## Add following Dependencies
+a. Spring Security
+b. JWT-> jjwt-api, jjwt-impl, jjwt-jackson
+ 
+## Create Configure class and Create Bean of Following: (Create an User inside UserDetails Service)
+ 
+a.	@Bean
+	public UserDetailsService userDetailsService() {
+		UserDetails user1 = User.builder().username("Deepak").password(passwordEncoder().encode("12345")).roles("ADMIN")
+				.build();
+		return new InMemoryUserDetailsManager(user1);
+	}
+ 
+b.	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+ 
+c.	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
+		return builder.getAuthenticationManager();
+	}
+## Create JWTAuthEntryPoint class and implements with AuthenticationEntryPoint | Override Method commence
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		PrintWriter out = response.getWriter();
+		out.println("Access Denied ||" + authException.getMessage());
+ 
+## Create JWTSecurityConfig class and create bean of following method:
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+ 
+		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/login").permitAll().anyRequest().authenticated())
+				.exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
+	}		
+
+ 
+## Create JwtFilter class and extends with OncePerRequestFilter | Override method doFilterInternal
+ 
+ 
+## Create API in Controller with /login path to generate JWT Token
+ 
+## Authenticate JWT Token During API calls except /login
+
+
+*-------------------------------------Eureka_Server--------------------------------------------------------------*
+
+
+Eureka Server / Service Registry
+ 
+1. Dependency:
+<dependency>
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+</dependency>
+2. Annotate Boot class with @EnableEurekaServer  
+ 
+3. configuration: Application.properties	 
+ 
+Spring.application.name=EUREKA-SERVER
+server.port=8090
+eureka.client.register-with-eureka=false
+eureka.clinet.fetch-registry=false
+ 
+ 
+Service Level
+ 
+1. Dependency :Eureka DiscoveryClinet
+<dependency>
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+ 
+ 
+2. Annotate Boot class with @EnableDiscoveryClient
+ 
+3. Configurations in Application.properties
+ 
+Spring.application.name=SERVICE-USER
+server.port=8091
+server.servlet.context-path=/user
+ 
+eureka.client.register-with-eureka=true
+eureka.clinet.fetch-registry=true
+eureka.client.serviceUrl.defaultZone=http://localhost:8090/eureka/
+
+*---------------------------------------YML File -------------------------------------*
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8090/eureka/
+server:
+  port: 8094
+spring:
+  application:
+    name: API-GATEWAY
+ 
+ 
+  cloud:
+    gateway:
+      routes:
+      - id: SERVICE-EXPLORER
+        uri: lb://SERVICE-EXPLORER
+        predicates:
+           - Path=/explorer/**
+           
+      - id: SERVICE-ADMIN
+        uri: lb://SERVICE-ADMIN
+        predicates:
+           - Path=/admin/**
+
+*---------------------------------------DDL COMMAND IN SQL ----------------------------------*
+
+Following are the five DDL commands in SQL:
+ 
+CREATE Command
+DROP Command
+ALTER Command
+TRUNCATE Command
+RENAME Command
+ 
+ 
+# DATA BASE Related :
+	SHOW DATABASE;
+	CREATE DATABASE student;
+	USE student;
+	DROP DATABASE student;
+	RENAME DATABASE student to studentdbms;// MySQL 5.x 
+
+ 
+# TABLE Related:
+ 
+	-CREATE TABLE: CREATE TABLE login (emp_id INT, emp_password VARCHAR(100), DOB DATE, Address VARCHAR(200));
+	-DESCRIPTION of TABLE: DESC login; // SHOW COLUMNS FROM login; // SHOW FULL COLUMNS FROM login;
+	-CREATE TABLE USING OTHER TABLE: CREATE TABLE login2 AS SELECT * FROM login;
+	-CREATE TABLE WITH KEY: CREATE TABLE login (emp_id INT AUTO_INCREMENT PRIMARY KEY, emp_name varchar(100), emp_password varchar(200));
+	-DROP or TRUNCATE TABLE: DROP TABLE login3 or TRUNCATE TABLE login3 
+
+	-RENAME TABLE: ALTER TABLE login2 RENAME TO login5;
+	-RENAME TABLE COLUMN: ALTER TABLE login2 RENAME COLUMN emp_id TO emp_userid;
+	-ADD NEW COLUMN: ALTER TABLE login2 ADD emp_pincode varchar(10);
+	-ADD NEW COLUMN AFTER Specified COLUMN: ALTER TABLE login2 ADD emp_address varchar(200) NOT NULL AFTER emp_name;
+	-DROP COLUMN : ALTER TABLE login2 DROP COLUMN emp_address;
+	-MODIFY COLUMN Definition: ALTER TABLE login2 MODIFY COLUMN emp_pincode INT(6);
+	-CHANGE COLUMN NAME with Definition: ALTER TABLE login2 CHANGE COLUMN emp_pincode emp_mobile INT(10); 
+
+*----------------------------------------------END---------------------------------------------------------------*
